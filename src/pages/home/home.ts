@@ -64,7 +64,11 @@ export class HomePage {
           role: 'cancel'
         },
         {
-          text: 'Ok'
+          text: 'Ok',
+          handler: data => {
+            console.log(data);
+            this.addMarker(data);
+          }
         }
       ],
       inputs: []
@@ -83,18 +87,25 @@ export class HomePage {
   }
 
   //Used to create a marker on a state the user has chosen.
-  addMarker() {
+  addMarker(stateID: number) {
+    //Sets ups State info
+    var stateLatLng = {lat: this.states[stateID].latitude, lng: this.states[stateID].longitude};
+
     //Sets up and renders the marker ifself.
     let marker = new google.maps.Marker({
       map: this.map,
       animation: google.maps.Animation.DROP,
-      position: this.map.getCenter()
+      position: stateLatLng
     });
 
     //Sets up information about the state the marker is pointed to.
-    let content = "<h4>Information!</h4>";
-    //Calls a function to create the info window;
+    let content = "<h4>" + this.states[stateID].name + "</h4>" +
+                  "<h5>Número de habitantes:" + this.states[stateID].habitants_number + "</h5>" +
+                  "<h5>Latitude:" + this.states[stateID].latitude + "</h5>" +
+                  "<h5>Longitude:" + this.states[stateID].longitude + "</h5>";
 
+
+    //Calls a function to create the info window;
     this.addInfoWindow(marker, content);
   }
 
